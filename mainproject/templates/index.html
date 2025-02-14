@@ -1,0 +1,358 @@
+{% load static %}
+{% static "images" as BaseUrl %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Skin disease detection</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="Travello template project">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}">
+<link href="{% static 'plugins/font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/animate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/main_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/responsive.css' %}">
+<style>
+    
+    
+    .m{
+        font-size: 20px;
+        color: black;
+    }
+    .heading{
+        color: rgb(41, 39, 39);
+        margin-left:190px;
+        clear:left;
+    }
+    .actnow_button{
+        margin-left: 40px;
+        margin-top:10px; 
+        border-radius:20px;
+         width:150px;
+         height:50px;
+         background-color:red;
+         color:#ffffff;
+    }
+    .review_button{
+        width: 220px;
+	height: 52px;
+	background: rgb(75, 75, 231);
+	color : white;
+	font-family : 'Oswald', sans-serif;
+	font-size : 16px;
+	font-weight: 400;
+	text-transform: uppercase;
+	border-radius: 20px;
+    margin-left:60px;
+    align-items: center;
+    }
+    .center {
+      margin-left:200px;
+      width: 60%;
+      height: 300px;
+      padding: 10px;
+    }
+    .middle {
+        margin-left:40px;
+        width: 60%;
+        padding: 10px;
+        text-align: center;
+      }
+     
+      
+      .column {
+        float: left;
+        width: 33.33%;
+        display: flex;
+        padding: 5px;
+        margin-right: 20px;
+      }
+      
+      /* Clearfix (clear floats) */
+      .row::after {
+        content: "";
+        clear: both;
+        display: table;
+      }
+      
+        *{
+          box-sizing: border-box;
+        }
+        
+        .box {
+          float: left;
+          width: 25%;
+          padding: 50px;
+        }
+        
+        .clearfix::after {
+          content: "";
+          clear: right;
+        }
+        .d{
+            float: left;
+            display:flex;
+            margin-left: 200px;
+            margin-right: 20px;
+            height: 200px;
+            width: 300px;
+        }
+        .break {
+            display: block;
+          }
+</style>
+</head>
+<body >
+    <div style="padding: 10px;margin:auto;">
+
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+
+<div class="super_container">
+
+    <!-- Header -->
+
+    <header class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="header_content d-flex flex-row align-items-center justify-content-start">
+                        <div class="header_content_inner d-flex flex-row align-items-end justify-content-start">
+                            <div class="logo"><a href="index.html">Skin disease <br>detection</a></div>
+                            <nav class="main_nav">
+                                <ul class="d-flex flex-row align-items-start justify-content-start">
+                                    <li class="active">
+                                    
+                                    <a href="#" style="color: rgba(0, 0, 255, 0.877);text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);">Home</a></li>
+
+                                    {% if user.is_authenticated %}
+                                        <li>Hello, {{ user.first_name }}</a></li>
+                                        <li><a href="accounts/logout" style="color: rgb(218, 8, 8);text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);">Logout</a></li>
+                                    {% else %}
+                                        <li><a href="accounts/register" style="color: rgb(189, 7, 7);text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);">Register</a></li>
+                                        <li><a href="accounts/login" style="color: rgb(219, 7, 7);text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);">Login</a></li>
+                                    {% endif %}
+                                    <li><a href="#features" style="color: rgb(26, 247, 26);text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);">Features</a></li>
+                                    <li><a href="#howtouse" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);color:rgb(37, 250, 37)">How to use</a></li>
+                                </ul>
+                            </nav>
+
+                            <!-- Hamburger -->
+
+                            <div class="hamburger ml-auto">
+                                <i class="fa fa-bars" aria-hidden="true"></i>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header_social d-flex flex-row align-items-center justify-content-start">
+            <ul class="d-flex flex-row align-items-start justify-content-start">
+                <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-dribbble" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-behance" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Menu -->
+
+    <div class="menu">
+        <div class="menu_header d-flex flex-row align-items-center justify-content-start">
+            <div class="menu_logo"><a href="index.html">Skin disease detection</a></div>
+            <div class="menu_close_container ml-auto"><div class="menu_close"><div></div><div></div></div></div>
+        </div>
+        <div class="menu_content" >
+            <ul style="color: #003366;">
+                <li><a href="#">Home</a></li>
+                
+                <li><a href="accounts/register">Register</a></li>
+                <li><a href="accounts/login">Login</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#howtouse">How to use</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+
+            </ul>
+        </div>
+        <div class="menu_social">
+            <div class="menu_phone ml-auto"></div>
+            <ul class="d-flex flex-row align-items-start justify-content-start">
+                <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-dribbble" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-behance" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Home -->
+
+    <div class="home" style="height: 500px;">
+
+        <!-- Home Slider -->
+        <div class="home_slider_container">
+            <div class="owl-carousel owl-theme home_slider">
+                
+                <!-- Slide -->
+                <div class="owl-item">
+                    <div class="background_image" style="background-image:url({%  static 'images/photo_3.jpg' %});border-radius:200px;"></div>
+                    <div class="home_slider_content_container">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="home_slider_content">
+                                        <div  style="margin-left: -50px;margin-top:10px;color:#2b2828";><h2> Say No To Skin Diseases!</h2>
+                                        
+                                            <br>
+                                            <h4 >Check your skin through online and get  results within seconds.</h4>
+                                        
+                                        </div>
+                                        <div style="margin-top:70px;">
+                                           <a href="#"><button class="actnow_button" style="background-color: rgb(228, 12, 12);width:250px; margin-left: -20px" >
+                                                <h4 style="color: white;">Check your skin Now</h4>
+                                            </button></a>
+                                        </div>
+                                        <div>
+                                        <h5 style="margin-top:30px;margin-left: -50px;color:#222121;">
+                                            * The result is not a diagnosis. To obtain an accurate diagnosis and a recommendation for treatment - consult anyone of our doctors</h5>
+                                         </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             
+
+
+        </div>
+    </div>
+
+<!-- skin diseases defnition -->
+
+
+    <br>
+     <div class="heading"><h3> What are skin diseaseas?   </h3></div>
+     <div class="media">
+    <div class="row">
+        <div class="column">
+            <img src="{% static 'images/diseases_image_3.jpg' %}" class="d">
+        </div>
+        <div class="column">
+          <div >
+            <m class="m">Skin diseases are conditions that affect your skin. These diseases may cause rashes, inflammation, itchiness or other skin changes.
+                 Some skin conditions may be genetic, while lifestyle factors may cause others. Skin disease treatment may include medications, creams or ointments, or lifestyle changes.</m><br>
+          
+            </m>
+          </div>
+        </div>
+        
+      </div>
+      </div>
+<br>
+
+
+<div class="center" style="background-image:url({% static 'images/skin.jpg' %})">
+  <div style="margin-left: 50px;margin-top:60px;">
+    <div style="color: rgb(88, 88, 214);"><h3>Early detection saves life!</h3></div>
+    <br><p>Small changes on skin can mean big problems<p>
+    <p>This can reveal what your skin needs to stay healthy.</p>
+    <a href="#"> <button class="actnow_button" ><h5>ACT NOW</h5></button></a>
+  </div>
+</div>
+
+<!-- Features -->
+
+<br><br>
+<div class="heading" id="features"><h3> Features </h3></div>
+ <br>
+
+ <div style="margin-left: 200px; color:#21a721">
+     
+<div style="float: left; width:300px;height:200px ">
+    <h4>Simple</h4>
+    <p>       
+     Place your phone near a mole or other formation on the skin and within  seconds, you will find out if there is cause for concern
+    </p>
+</div>
+
+<div  style="float: left;width:300px;height:100px;margin-right:10px;">
+    <h4>Affordable</h4>
+    <p>   
+    Image analytics features come at an unbeatable price, fit for any request or budget. Flexible pricing plans and customizable bundles will save your practice both time andmoney.
+    </p>
+</div>
+
+<div  style="float: left;width:300px;height:100px">
+    <h4>Accessible</h4>
+    <p>
+     Available anytime, anywhere. Keep your health in check at your fingertips even when you are on the go.
+    </p>
+</div>
+</div>
+<br><br><br>
+
+<!-- reviews section-->
+
+
+<div  class="heading" id="reviews"><h3>Testimonial given by clients </h3>
+</div>
+  
+<br><br><br><br>
+{% include 'reviews.html' %}
+
+
+<br><br><br><br><br>
+<center><a href="add_review""><button class="review_button">Share your feedback</button></a></center>
+
+
+<!-- Instruction to use -->
+
+
+<br><br>
+<div class="heading" id="howtouse"><h3>How to detect skin diseases?</h3></div>
+<br><br>
+<div class="clearfix">
+    
+    <div class="box" >
+       <div style="margin-left: 10px;"> <img src="download.jpg"></div><p>thki sis matter</p>
+    <p>Some text inside the box.</p>
+    </div>
+    <div class="box" style="background-color:#ccc">
+        <img src="download.jpg"><p>thki sis matter</p>
+    <p>Some text inside the box.</p>
+    </div>
+    <div class="box" style="background-color:#ddd">
+        <img src="download.jpg"><p>thki sis matter</p>
+    <p>Some text inside the box.</p>
+    </div>
+    <div class="box" >
+        <div style="margin-left: 10px;"> <img src="download.jpg"></div><p>thki sis matter</p>
+     <p>Some text inside the box.</p>
+     </div>
+</div>
+  
+
+  <br><br>
+  
+</div>
+<script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+<script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+<script src="{% static 'plugins/Isotope/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'plugins/scrollTo/jquery.scrollTo.min.js' %}"></script>
+<script src="{% static 'plugins/easing/easing.js' %}"></script>
+<script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+</div>
+</body>
+</html>

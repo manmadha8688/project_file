@@ -1,0 +1,112 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Form</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(to bottom, #3a3f55, #5a6570);
+    }
+
+    .login-container {
+      background: #333;
+      padding: 40px;
+      width: 350px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      position: relative;
+    }
+
+    .login-container:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(to right, #00d2ff, #3a7bd5);
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+
+    .login-container h2 {
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+      background: #444;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .login-container input::placeholder {
+      color: #bbb;
+    }
+
+    .login-container button {
+      background: linear-gradient(to right, #00d2ff, #3a7bd5);
+      border: none;
+      padding: 10px;
+      color: #fff;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .login-container button:hover {
+      background: linear-gradient(to right, #00b5e2, #326ba8);
+    }
+
+    .forgot-password {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .forgot-password a {
+      color: #00d2ff;
+      text-decoration: none;
+    }
+
+    .forgot-password a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Login</h2>
+    <form action="login" method="post">
+        {% csrf_token %}
+      <input type="text" placeholder="Username" required name="username">
+      <input type="password" placeholder="Password" required name="password">
+      <button type="submit">Login</button>
+      <div class="forgot-password">
+        <h3 style="color: #679eaa;">Not  a member?</h3>
+      </div>
+      <h2 ><a href="register" style="color: #679eaa;">Register</a></h2>
+      
+      <div  style="color: red;text-align:center;" >
+        {%  for message in messages %}
+          <h2>{{message}}</h2>
+        {% endfor %}
+    </div>
+    </form>
+  </div>
+</body>
+</html>
