@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import auth,User
 from .models import reviews
-import joblib
+
 from joblib import load
 
 # Create your views here.
@@ -12,7 +12,7 @@ def index(request):
     review =reviews.objects.all()
     return render(request,'index.html',{'reviews':review})
 def add_review(request):
-    if request.method == 'GET':
+    if request.method == 'POST':
         ratting = request.POST['ratting']
         dis = request.POST['dis']
 
