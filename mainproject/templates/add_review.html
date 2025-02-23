@@ -3,9 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Review Popup</title>
+    <style>
+       
+
+        /* Button Style */
+        .review_button {
+            width: 220px;
+            height: 52px;
+        background: rgb(75, 75, 231);
+        color : white;
+        font-family : 'Oswald', sans-serif;
+        font-size : 16px;
+        font-weight: 400;
+        text-transform: uppercase;
+        border-radius: 20px;
+        margin-left:60px;
+        align-items: center;
+            transition: background-color 0.3s;
+            cursor: pointer; /* Makes the cursor a hand */
+        }
+
+        
+    .review_button:hover {
+        background-color: darkblue;
+    }
+
+        /* Popup Background */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Popup Box */
+        .popup-box {
+            background: white;
+            padding: 20px;
+            width: 300px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            position: relative;
+        }
+
+        /* Close Button */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 50%;
+        }
+    </style>
 </head>
 <body>
-    <h1>take review and added to reviews</h1>
+
+   <center> <button class="review_button" onclick="openPopup()" >Share your feedback</button></center>
+    <div class="popup-overlay" id="popup">
+        <div class="popup-box">
+            <button class="close-btn" onclick="closePopup()">×</button>
+            <h2>Write a Review</h2>
+            <form action="{% url 'review:add_review' %}" method="post">
+
+                <h2>form</h2>
+
+                <input type="submit" />
+
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+        function openPopup() {
+            document.getElementById("popup").style.display = "flex";
+        }
+
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+    </script>
+
 </body>
 </html>

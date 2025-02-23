@@ -22,4 +22,5 @@ urlpatterns = [
     path('',include('app.urls')),
     path('accounts/',include('accounts.urls')),
     path('desease_detecttion/',include('desease_detecttion.urls')),
+    path('review',include('review.urls')),
 ]
