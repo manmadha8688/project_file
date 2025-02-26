@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Expense Limits</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #f8f9fa; padding: 20px; display: flex; justify-content: space-between; }
+        .container { display: flex; width: 100%; max-width: 1200px; margin: auto; gap: 20px; }
+        .limits-list { flex: 2; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        .limits-form { flex: 1; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        .limits-form .submit { background: #007bff; color: white; font-size: 16px; border: none; cursor: pointer; }
+        .limits-form .submit:hover { background: #0056b3; }
+        .grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .category-box { padding: 15px; border-radius: 8px; background: #eee; text-align: center; position: relative; cursor: pointer; }
+        .over-limit { background: #ffcccc !important; } /* Overusage color */
+        .remaining.overused { color: red; font-weight: bold; } /* Overusage text */
+        .edit-input { width: 80px; text-align: center; font-size: 14px; border: none; background: transparent; }
+        .category-dropdown { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+
+        .limits-list {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        
+        .limits-list h3 {
+            text-align: center;
+            font-size: 24px;
+            color: #333;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+        
+        td {
+            font-size: 16px;
+            color: #555;
+        }
+        
+        td span {
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        tr:nth-child(odd) {
+            background-color: #fafafa;
+        }
+        
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        h3 {
+            font-size: 18px;
+            text-align: center;
+            color: #ff0000;
+        }
+        
+        h3 {
+            margin-top: 20px;
+        }
+        
+        span {
+            font-size: 14px;
+        }
+        
+        td span {
+            color: red;
+        }
+        
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        
+        @media (max-width: 768px) {
+            table, th, td {
+                font-size: 14px;
+            }
+        
+            .limits-list {
+                padding: 10px;
+            }
+        }
+        p {
+            text-align: center;
+            color: purple;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Existing Limits (Left) -->
+        <div class="limits-list">
+            <h3>Monthly Limits</h3>
+    
+            {% if expenselimits %}
+                <table>
+                    <tr>
+                        <th>Category</th>
+                        <th>Limit ($)</th>
+                        <th>Spent ($)</th>
+                        <th>Remaining ($)</th>
+                    </tr>
+                    {% for limit in expenselimits %}
+                    <tr {% if limit.remaining < 0 %} style="background-color: #ffcccc;" {% endif %}>
+                        <td>{{ limit.category }}</td>
+                        <td>{{ limit.limit }}</td>
+                        <td>{{ limit.spent }}</td>
+                        <td>{% if limit.remaining < 0 %}<span style="color: red;">Overused: {{ limit.remaining }}</span>{% else %}{{ limit.remaining }}{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+            <br><br><br><br>
+                <h3 style="color: red; text-align:center;">No expense limit for category wise added yet.</h3>
+            {% endif %}
+        </div>
+        <!-- Set Limit Form (Right) -->
+        <div class="limits-form">
+            <h3>Set Expense Limits</h3>
+            <form action="{% url 'setexpenselimit'%}" method="POST">
+                {% csrf_token %}
+            <input name="category" list="categoryList" id="categoryInput" placeholder="Select or Enter Category">
+            <datalist id="categoryList">
+                <option value="Food"></option>
+                <option value="Transport"></option>
+                <option value="Entertainment"></option>
+                <option value="Shopping"></option>
+            </datalist>
+            <input type="number" name="limit" id="limitAmount" placeholder="Set Monthly Limit ($)">
+            <input type="submit" class="submit" value="Set Limit" />
+            </form>
+            {% for message in messages%}
+            <br><br>
+                <p>{{message}}</p>
+            {%endfor%}
+        </div>
+    </div>
+
+    <script>
+
+        function getRemainingDays() {
+            let today = new Date();
+            let lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+            return lastDay - today.getDate();
+        }
+
+
+        document.getElementById("remainingDays").innerText = getRemainingDays();
+        
+    </script>
+
+</body>
+</html>
+
+
+
+{% endblock %}

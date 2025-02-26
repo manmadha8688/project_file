@@ -1,0 +1,171 @@
+{% extends 'base.html'%}
+
+{% block content%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions</title>
+    <style>
+        /* General Page Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fc;
+    margin: 0;
+}
+
+/* Filter Container */
+.filter-container {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.filter-container label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.filter-container input,
+.filter-container select,
+.filter-container button {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.filter-container .filter {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    width:100px;
+    margin-left: 10px;
+}
+
+.filter-container .filter:hover {
+    background-color: #0056b3;
+}
+
+/* Transactions Table */
+.transactions-container {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+table th {
+    background-color: #007bff;
+    color: white;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- Filter Section -->
+    <div class="filter-container">
+        <form action="{% url 'all_transactions' %}" method="POST">
+
+            {% csrf_token %}
+        <label for="start-date">From Date:</label>
+        <input type="date" id="start-date" name="start-date">
+
+        <label for="end-date">To Date:</label>
+        <input type="date" id="end-date" name="end-date">
+
+        <label for="category">Category:</label>
+        <select id="category" name="category">
+            <option value="">All</option>
+            {% for category in categories%}
+            <option value="{{category.name}}">{{category.name}}</option>
+            {% endfor %}
+        </select>
+
+        <label for="type">Type:</label>
+        <select id="type" name="type">
+            <option value="">All</option>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+        </select>
+
+        <input type="submit" value="Filter" class="filter" />
+    </div>
+
+    <!-- Transactions Table -->
+     <h2>All transaction Records</h2><br>
+    <div class="transactions-container">
+        <table>
+            <thead>
+                <tr><th>Transaction Entry Date</th>
+                    <th>Transaction done Date</th>
+                    <th>Category</th>
+                    <th>type</th>
+                    <th>Payment method</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody id="transactions-body">
+                {% if all_transactions %}
+                {% for transaction in all_transactions%}
+                <tr>
+                    <td>{{transaction.created_at}}</td>
+                    <td>{{transaction.date}}</td>
+                    <td>{{transaction.category}}</td>
+                    <td>{{transaction.type}}</td>
+                    <td>{{transaction.payment_method}}</td>
+                    <td>$ {{transaction.amount}}</td>
+                </tr>
+                {% endfor %}
+                
+                {% endif%}
+            </tbody>
+        </table>
+        {% if all_transactions %}
+
+        {%else%}
+
+                <h3>No transactios are Done</h3>
+
+      
+                {% endif%}
+    </div>
+
+    
+
+</body>
+</html>
+
+
+{% endblock %}

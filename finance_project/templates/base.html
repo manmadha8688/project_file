@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            width: 100%;
+            background: #3989fa;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header .title {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .header .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+        .header .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1em;
+        }
+        .main-container {
+            display: flex;
+            margin-top: 10px;
+        }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: linear-gradient(135deg, #2d52fa, #aff135);
+            color: white;
+            padding-top: 20px;
+            position: fixed;
+            overflow-y: auto;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+        }
+        .sidebar ul li:hover {
+            background: rgb(249, 223, 223);
+            color:red;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            width: 100%;
+        }
+        .dashboard {
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .box {
+            flex: 1;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 10px;
+        }
+        
+         .card {
+            width: 350px;
+            height: 200px;
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+            background: linear-gradient(135deg, #0b1e31, #14693e); /* Adjust colors */
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            font-family: Arial, sans-serif;
+            
+        }
+        
+        .card h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        
+        .card .balance {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        .card .extra-savings {
+            font-size: 1em;
+            opacity: 0.8;
+        }
+        .finance-card {
+            width: 320px;
+            padding: 20px;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+        }
+        
+        .finance-card h3 {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+        
+        .income, .outcome {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        
+        .text {
+            margin-left: 15px;
+        }
+        
+        .text .amount {
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        .income .amount {
+            color: green;
+        }
+        
+        .outcome .amount {
+            color: purple;
+        }
+        .income .font{
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.1em;
+        }
+
+        .outcome .font{
+            font-family:serif;
+            font-size: 1.1em;
+        }
+        
+        .saving {
+            
+            background: linear-gradient(135deg, #f9b744, #38ddef);
+            text-align: left;
+            margin-right: 200px;
+            
+        }
+        .saving .extra-savings{
+            font-size: 1em;
+            opacity: 0.8;
+        }
+        .form-wrapper {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .form-container {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f4f4f4;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 43%;
+        }
+        .form-container h2 {
+            margin-bottom: 15px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-group button {
+            background: #0056b3;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            
+        }
+        .form-group button:hover {
+            
+            background: #ff2600e6;
+        }
+        .category-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 400px;
+        }
+        .category-card {
+            width: 120px;
+            text-align: center;
+        }
+        .category-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        canvas {
+            width: 100px !important;
+            height: 100px !important;
+        }
+        .transactions-table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .transactions-table th, .transactions-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .transactions-table th {
+            background: #007bff;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="title">Finance Dashboard</div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            
+                
+            <a href="#">login</a>
+            <a href="#">Contact</a>
+        </div>
+    </div>
+    <div class="main-container">
+        <div class="sidebar">
+            <ul>
+                <li onclick="window.location.href='/'">Home </li>
+                <li onclick="window.location.href='{% url 'all_transactions' %}'">All transactions</li>
+                <li onclick="window.location.href='{% url 'goal:goals'%}'"> Money Goals</li>
+                <li onclick="window.location.href='{% url 'setexpenselimit'%}'" >Expense Limits</li>
+                
+                <li onclick="window.location.href='{% url 'loans'%}'" >Loans/Debts</li>
+                <li onclick="window.location.href='{% url 'billsremainder'%}'" >Bills Remainder</li>
+
+                <li> 
+                    5️⃣ Investments
+                    6️⃣ Reports & Analytics
+                    7️⃣ Bill Reminders</li>
+                <li>Contact</li>
+
+            </ul>
+        </div>
+<div class="content">
+            {% block content %}
+
+            {%endblock%}
+</div>
+</div>
+</body>
+</html>

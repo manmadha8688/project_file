@@ -1,0 +1,132 @@
+{% extends 'base.html'%}
+
+{% block content%}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money Goals</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #f8f9fa; padding: 20px; display: flex; justify-content: space-between; }
+        .container { display: flex; width: 100%; max-width: 1200px; margin: auto; }
+        .goals-list, .goal-form { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        .goals-list { flex: 1; margin-right: 20px; }
+        .goal-form { flex: 1; }
+        input, button { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        button { background: #007bff; color: white; font-size: 16px; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .progress-container { width: 100%; background: #ddd; border-radius: 5px; margin-top: 10px; }
+        .progress-bar { height: 20px; width: 0%; background: #28a745; border-radius: 5px; text-align: center; color: white; font-size: 14px; line-height: 20px; }
+        .goal-item { padding: 10px; background: #eee; margin-top: 10px; border-radius: 5px; }
+        #saveGoalBtn { display: none; } /* Initially hidden */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Goals List (Left Side) -->
+        <div class="goals-list">
+            <h3>Your Goals</h3>
+            <div id="goalItems">
+                <!-- Goals will be added here dynamically -->
+            </div>
+        </div>
+
+        <!-- Set Goal Form (Right Side) -->
+        <div class="goal-form">
+            <h3>Calculate Savings Goal</h3>
+            <input type="text" id="goalName" placeholder="Goal Name">
+            <input type="number" id="targetAmount" placeholder="Target Amount ($)">
+            <input type="number" id="savedAmount" placeholder="Amount Already Saved ($)">
+            <input type="number" id="income" placeholder="Your Monthly Income ($)">
+            <input type="number" id="savingPercentage" placeholder="Percentage of Income to Save (%)">
+            <button onclick="calculateGoal()">Calculate Plan</button>
+            
+            <!-- Progress display -->
+            <div id="goalResult" style="display:none; margin-top: 15px;">
+                <p>💰 Saved: <span id="goalSaved">$0</span></p>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar">0%</div>
+                </div>
+                ⏳ Estimated Time: <span id="goalMonths">0</span> months
+            </div>
+
+            <!-- Save Goal Button -->
+            <button id="saveGoalBtn" onclick="saveGoal()">Add Goal</button>
+        </div>
+    </div>
+
+    <script>
+        let currentGoal = {}; // Store the latest calculated goal
+
+        function calculateGoal() {
+            let goalName = document.getElementById("goalName").value.trim();
+            let targetAmount = parseFloat(document.getElementById("targetAmount").value) || 0;
+            let savedAmount = parseFloat(document.getElementById("savedAmount").value) || 0;
+            let income = parseFloat(document.getElementById("income").value) || 0;
+            let savingPercentage = parseFloat(document.getElementById("savingPercentage").value) || 0;
+
+            if (!goalName || !targetAmount || !income || !savingPercentage) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            let monthlySavings = (income * savingPercentage) / 100;
+            let amountLeft = targetAmount - savedAmount;
+            let monthsNeeded = Math.ceil(amountLeft / monthlySavings);
+            let progress = ((savedAmount / targetAmount) * 100).toFixed(2);
+            
+            // Store the calculated goal
+            currentGoal = { goalName, targetAmount, savedAmount, progress, monthsNeeded };
+
+            // Update UI
+            document.getElementById("goalSaved").innerText = `$${savedAmount}`;
+            document.getElementById("goalMonths").innerText = monthsNeeded;
+            document.getElementById("progressBar").style.width = progress + "%";
+            document.getElementById("progressBar").innerText = progress + "%";
+
+            // Show result and save button
+            document.getElementById("goalResult").style.display = "block";
+            document.getElementById("saveGoalBtn").style.display = "block";
+        }
+
+        function saveGoal() {
+            if (!currentGoal.goalName) {
+                alert("No goal calculated yet!");
+                return;
+            }
+
+            let goalItem = document.createElement("div");
+            goalItem.classList.add("goal-item");
+            goalItem.innerHTML = `
+                🌟 ${currentGoal.goalName} - <span>$${currentGoal.targetAmount}</span>
+                <br>💰 Saved: $${currentGoal.savedAmount}
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: ${currentGoal.progress}%;">${currentGoal.progress}%</div>
+                </div>
+                ⏳ Estimated Time: <span>${currentGoal.monthsNeeded}</span> months
+            `;
+
+            document.getElementById("goalItems").appendChild(goalItem);
+
+            // Reset form and hide save button
+            document.getElementById("goalName").value = "";
+            document.getElementById("targetAmount").value = "";
+            document.getElementById("savedAmount").value = "";
+            document.getElementById("income").value = "";
+            document.getElementById("savingPercentage").value = "";
+            document.getElementById("goalResult").style.display = "none";
+            document.getElementById("saveGoalBtn").style.display = "none";
+
+            // Clear current goal after saving
+            currentGoal = {};
+        }
+    </script>
+</body>
+</html>
+
+
+{%endblock%}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category-wise Expenditure</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .category-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 500px;
+        }
+        .category-card {
+            width: 120px;
+            text-align: center;
+        }
+        .category-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        canvas {
+            width: 100px !important;
+            height: 100px !important;
+        }
+    </style>
+</head>
+<body>
+    
+    <h3>Category-wise Expenditure</h3><br>
+
+    <div class="category-container" id="categoryContainer"></div>
+
+    <script>
+        const categories = [
+            { name: "Food", limit: 500, spent: 350 },
+            { name: "Rent", limit: 1000, spent: 1000 },
+            { name: "Entertainment", limit: 200, spent: 80 },
+            { name: "Transport", limit: 300, spent: 150 },
+            { name: "Shopping", limit: 400, spent: 250 }
+        ];
+
+        const container = document.getElementById("categoryContainer");
+
+        categories.forEach((category, index) => {
+            const remaining = category.limit - category.spent;
+
+            // Create category card
+            const card = document.createElement("div");
+            card.classList.add("category-card");
+            card.innerHTML = `
+                <div class="category-label">${category.name}</div>
+                <canvas id="chart${index}"></canvas>
+            `;
+            container.appendChild(card);
+
+            // Draw the gauge chart
+            const ctx = document.getElementById(`chart${index}`).getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ["Spent", "Remaining"], // Ensure both labels are here
+                    datasets: [{
+                        data: [category.spent, remaining],
+                        backgroundColor: ['red', 'lightgray'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    maintainAspectRatio: false,
+                    circumference: 180, // Half-circle gauge effect
+                    rotation: 270,
+                    cutout: '70%',
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    const label = tooltipItem.label; 
+                                    const value = tooltipItem.raw;
+                                    return ` $${value}`;
+                                }
+                            }
+                        },
+                        legend: { display: false }
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

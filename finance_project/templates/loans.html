@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debt & Loan Tracker</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #f8f9fa; padding: 20px; display: flex; justify-content: space-between; }
+        .container { display: flex; width: 100%; max-width: 1200px; margin: auto; gap: 20px; }
+        .loan-list { flex: 2; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        .loan-form { flex: 1; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        input, select, button { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        button { background: #007bff; color: white; font-size: 16px; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #007bff; color: white; }
+        .progress-bar { height: 10px; background: #ddd; border-radius: 5px; margin-top: 5px; }
+        .progress { height: 100%; background: #28a745; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Loan List (Left) -->
+        <div class="loan-list">
+            <h3>Active Loans & Debts</h3>
+            <table id="loanTable">
+                <tr>
+                    <th>Lender</th>
+                    <th>Amount</th>
+                    <th>Interest</th>
+                    <th>Total Payable</th>
+                    <th>Paid</th>
+                    <th>Remaining</th>
+                    <th>Monthly Payment</th>
+                    <th>Monthly Due Date</th>
+                    <th>Months Remaining</th>
+                    <th>Progress</th>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- Add Loan Form (Right) -->
+        <div class="loan-form">
+            <h3>Add New Loan/Debt</h3>
+            <input type="text" id="lenderName" placeholder="Lender Name">
+            <input type="number" id="loanAmount" placeholder="Loan Amount ($)">
+            <input type="number" id="interestRate" placeholder="Interest Rate (%)">
+            <input type="number" id="paidAmount" placeholder="Amount Paid ($)">
+            
+            <label for="loanTerm">Loan Term (Months):</label>
+            <input list="loanTermOptions" id="loanTerm" placeholder="Enter or select months">
+            <datalist id="loanTermOptions">
+                <option value="6"></option>
+                <option value="9"></option>
+                <option value="12"></option>
+            </datalist>
+
+            <input type="date" id="monthlyDueDate" placeholder="Monthly Due Date">
+            <button onclick="addLoan()">Add Loan</button>
+        </div>
+    </div>
+
+    <script>
+        function addLoan() {
+            let lender = document.getElementById("lenderName").value;
+            let amount = parseFloat(document.getElementById("loanAmount").value) || 0;
+            let interestRate = parseFloat(document.getElementById("interestRate").value) || 0;
+            let paid = parseFloat(document.getElementById("paidAmount").value) || 0;
+            let loanTerm = parseInt(document.getElementById("loanTerm").value) || 12; // Default to 12 months
+            let dueDate = document.getElementById("monthlyDueDate").value;
+            
+            if (!lender || amount <= 0 || !dueDate || loanTerm <= 0) {
+                alert("Please enter valid loan details.");
+                return;
+            }
+
+            let monthlyInterestRate = interestRate / 100 / 12;
+            let monthlyPayment = (amount * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -loanTerm));
+            let totalPayable = monthlyPayment * loanTerm;
+            let remainingAmount = totalPayable - paid;
+            let progress = (paid / totalPayable) * 100;
+            progress = progress > 100 ? 100 : progress;
+            
+            let table = document.getElementById("loanTable");
+            let row = table.insertRow(-1);
+            row.innerHTML = `
+                <td>${lender}</td>
+                <td>$${amount.toFixed(2)}</td>
+                <td>${interestRate}%</td>
+                <td>$${totalPayable.toFixed(2)}</td>
+                <td>$${paid.toFixed(2)}</td>
+                <td>$${remainingAmount.toFixed(2)}</td>
+                <td>$${monthlyPayment.toFixed(2)}</td>
+                <td>${dueDate}</td>
+                <td>${loanTerm} months</td>
+                <td>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: ${progress}%;"></div>
+                    </div>
+                </td>
+            `;
+
+            // Clear input fields after adding
+            document.getElementById("lenderName").value = "";
+            document.getElementById("loanAmount").value = "";
+            document.getElementById("interestRate").value = "";
+            document.getElementById("paidAmount").value = "";
+            document.getElementById("loanTerm").value = "";
+            document.getElementById("monthlyDueDate").value = "";
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+{% endblock %}
