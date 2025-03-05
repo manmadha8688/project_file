@@ -45,79 +45,59 @@
                     <th>Months Remaining</th>
                     <th>Progress</th>
                 </tr>
+                {% for loan in loans%}
+                <tr>
+                <td>{{loan.lender_name}}</td>
+                <td>{{loan.amount}}</td>
+                <td>{{loan.interest_rate}}</td>
+                <td>{{loan.total_payable}}</td>
+                <td>{{loan.paid_amount}}</td>
+                <td>{{loan.remaining_balance}}</td>
+                <td>{{loan.monthly_payment}}</td>
+                <td>{{loan.due_date}}</td>
+                <td>{{loan.remaining_months}}</td>
+                
+                <td>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: {{loan.progress}}%;"></div>
+                    </div>
+                </td>
+                </tr>
+                {% endfor %}
             </table>
         </div>
         
         <!-- Add Loan Form (Right) -->
         <div class="loan-form">
+            <form action="{%url 'loans' %}" method="POST">
+                {% csrf_token %}
             <h3>Add New Loan/Debt</h3>
-            <input type="text" id="lenderName" placeholder="Lender Name">
-            <input type="number" id="loanAmount" placeholder="Loan Amount ($)">
-            <input type="number" id="interestRate" placeholder="Interest Rate (%)">
-            <input type="number" id="paidAmount" placeholder="Amount Paid ($)">
+            <input type="text" name="lenderName" placeholder="Lender Name" required>
+            <input type="number" name="amount" placeholder="Loan Amount ($)" required>
+            <input type="number" name="interestrate" placeholder="Interest Rate (%)" required>
+            <input type="number" name="paidamount" placeholder="Amount Paid ($)">
             
             <label for="loanTerm">Loan Term (Months):</label>
-            <input list="loanTermOptions" id="loanTerm" placeholder="Enter or select months">
+            <input list="loanTermOptions" name="loanterm" placeholder="Enter or select months" required>
             <datalist id="loanTermOptions">
                 <option value="6"></option>
                 <option value="9"></option>
                 <option value="12"></option>
             </datalist>
+             
+            <label for="loanTerm">Due date :</label>
+            <input type="date" name="duedate" placeholder="Monthly Due Date" required>
+            <label for="loanTerm">Loan date :</label>
+            <input type="date" name="loandate" placeholder="Loan taken date" required>
+            
+            <button type="submit">Add Loan/Debt</button>
 
-            <input type="date" id="monthlyDueDate" placeholder="Monthly Due Date">
-            <button onclick="addLoan()">Add Loan</button>
+            
+            </form>
         </div>
     </div>
 
-    <script>
-        function addLoan() {
-            let lender = document.getElementById("lenderName").value;
-            let amount = parseFloat(document.getElementById("loanAmount").value) || 0;
-            let interestRate = parseFloat(document.getElementById("interestRate").value) || 0;
-            let paid = parseFloat(document.getElementById("paidAmount").value) || 0;
-            let loanTerm = parseInt(document.getElementById("loanTerm").value) || 12; // Default to 12 months
-            let dueDate = document.getElementById("monthlyDueDate").value;
-            
-            if (!lender || amount <= 0 || !dueDate || loanTerm <= 0) {
-                alert("Please enter valid loan details.");
-                return;
-            }
-
-            let monthlyInterestRate = interestRate / 100 / 12;
-            let monthlyPayment = (amount * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -loanTerm));
-            let totalPayable = monthlyPayment * loanTerm;
-            let remainingAmount = totalPayable - paid;
-            let progress = (paid / totalPayable) * 100;
-            progress = progress > 100 ? 100 : progress;
-            
-            let table = document.getElementById("loanTable");
-            let row = table.insertRow(-1);
-            row.innerHTML = `
-                <td>${lender}</td>
-                <td>$${amount.toFixed(2)}</td>
-                <td>${interestRate}%</td>
-                <td>$${totalPayable.toFixed(2)}</td>
-                <td>$${paid.toFixed(2)}</td>
-                <td>$${remainingAmount.toFixed(2)}</td>
-                <td>$${monthlyPayment.toFixed(2)}</td>
-                <td>${dueDate}</td>
-                <td>${loanTerm} months</td>
-                <td>
-                    <div class="progress-bar">
-                        <div class="progress" style="width: ${progress}%;"></div>
-                    </div>
-                </td>
-            `;
-
-            // Clear input fields after adding
-            document.getElementById("lenderName").value = "";
-            document.getElementById("loanAmount").value = "";
-            document.getElementById("interestRate").value = "";
-            document.getElementById("paidAmount").value = "";
-            document.getElementById("loanTerm").value = "";
-            document.getElementById("monthlyDueDate").value = "";
-        }
-    </script>
+    
 </body>
 </html>
 

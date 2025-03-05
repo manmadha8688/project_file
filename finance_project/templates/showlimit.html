@@ -13,73 +13,95 @@
             max-width: 500px;
         }
         .category-card {
-            width: 120px;
+            width: 140px;
             text-align: center;
         }
         .category-label {
             font-weight: bold;
             margin-bottom: 5px;
         }
+        .overspent-text {
+            color: darkred;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
         canvas {
-            width: 100px !important;
-            height: 100px !important;
+            width: 90px !important;
+            height: 90px !important;
         }
     </style>
 </head>
 <body>
-    
-    <h3>Category-wise Expenditure</h3><br>
 
+    <h3>Category-wise Expenditure</h3><br>
     <div class="category-container" id="categoryContainer"></div>
 
     <script>
-        const categories = [
-            { name: "Food", limit: 500, spent: 350 },
-            { name: "Rent", limit: 1000, spent: 1000 },
-            { name: "Entertainment", limit: 200, spent: 80 },
-            { name: "Transport", limit: 300, spent: 150 },
-            { name: "Shopping", limit: 400, spent: 250 }
-        ];
+        var expenselimits = JSON.parse('{{ expenselimits|safe }}');
+
+        const categories = Object.keys(expenselimits).map(key => {
+            const limit = expenselimits[key].limit || 1;
+            const spent = expenselimits[key].spent || 0;
+            const overSpent = spent > limit ? spent - limit : 0;
+            return {
+                name: key,
+                limit: limit,
+                spent: spent,
+                remaining: Math.max(limit - spent, 0),
+                overSpent: overSpent
+            };
+        });
 
         const container = document.getElementById("categoryContainer");
 
         categories.forEach((category, index) => {
-            const remaining = category.limit - category.spent;
-
-            // Create category card
             const card = document.createElement("div");
             card.classList.add("category-card");
+
+            // Display warning if overspent
+            let warningText = category.overSpent > 0 
+                ? `<div class="overspent-text">Over Spent: $${category.overSpent}</div>` 
+                : '';
+
             card.innerHTML = `
                 <div class="category-label">${category.name}</div>
                 <canvas id="chart${index}"></canvas>
+                ${warningText}
             `;
             container.appendChild(card);
 
-            // Draw the gauge chart
+            const chartData = [category.spent, category.remaining];
+            const chartColors = ['red', 'lightgray'];
+
+            // If over budget, adjust chart data and color
+            if (category.overSpent > 0) {
+                chartData.push(category.overSpent);
+                chartColors.push('darkred'); // Over budget color
+            }
+
             const ctx = document.getElementById(`chart${index}`).getContext('2d');
             new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ["Spent", "Remaining"], // Ensure both labels are here
+                    labels: ["Spent", "Remaining", "Over Spent"],
                     datasets: [{
-                        data: [category.spent, remaining],
-                        backgroundColor: ['red', 'lightgray'],
+                        data: chartData,
+                        backgroundColor: chartColors,
                         borderWidth: 0
                     }]
                 },
                 options: {
                     responsive: false,
                     maintainAspectRatio: false,
-                    circumference: 180, // Half-circle gauge effect
+                    circumference: 180,
                     rotation: 270,
                     cutout: '70%',
                     plugins: {
                         tooltip: {
                             callbacks: {
                                 label: function (tooltipItem) {
-                                    const label = tooltipItem.label; 
-                                    const value = tooltipItem.raw;
-                                    return ` $${value}`;
+                                    return ` $${tooltipItem.raw}`;
                                 }
                             }
                         },

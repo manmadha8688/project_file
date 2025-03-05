@@ -15,11 +15,7 @@ class PaymentMethod(models.Model):
 
 
 class Transaction(models.Model):
-    TRANSACTION_TYPES = [
-        ('income', 'Income'),
-        ('expense', 'Expense'),
-    ]
-
+    
     #transacion entered date details
     created_at = models.DateTimeField(auto_now_add=True)  # Auto timestamp when created
     updated_at = models.DateTimeField(auto_now=True)  # Auto update timestamp
@@ -40,6 +36,6 @@ class Transaction(models.Model):
    
 
     def __str__(self):
-        return f"{self.user} - {self.type} - ${self.amount} - {self.date.strftime('%Y-%m-%d')}"
+        return f" {self.type} - ${self.amount} - {self.date.strftime('%Y-%m-%d')}"
 
 

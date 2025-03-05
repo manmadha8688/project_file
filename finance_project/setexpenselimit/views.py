@@ -39,7 +39,6 @@ def home(request):
     
     for object in expenselimits:
 
-        object.spent = Transaction.objects.filter(category=object.category, type=type).aggregate(total_spent=Sum('amount'))['total_spent'] or Decimal(0)
         object.remaining = object.limit - object.spent
         object.save()
 

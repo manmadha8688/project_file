@@ -1,6 +1,6 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
 
-{% block content%}
+{% block content %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,14 +8,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transactions</title>
-    <style>
-        /* General Page Styling */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f7fc;
-    margin: 0;
-}
+    <script>
+        let deleteMode = false;
 
+        function toggleDelete() {
+            deleteMode = !deleteMode;
+            updateDeleteUI();
+        }
+        
+        function updateDeleteUI() {
+            let checkboxes = document.querySelectorAll('.delete-checkbox');
+            let deleteBtn = document.getElementById('delete-btn');
+            let confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+        
+            checkboxes.forEach(checkbox => {
+                checkbox.style.display = deleteMode ? 'inline-block' : 'none';
+                checkbox.checked = false;
+            });
+        
+            deleteBtn.style.display = deleteMode ? 'none' : 'inline-block'; // Hide "Delete"
+            confirmDeleteBtn.style.display = deleteMode ? 'inline-block' : 'none'; // Show "Delete Selected"
+        
+            confirmDeleteBtn.disabled = true; // Initially disable until at least one is checked
+        }
+        
+        function toggleDeleteButton() {
+            let checkboxes = document.querySelectorAll('.delete-checkbox:checked');
+            document.getElementById('confirm-delete-btn').disabled = checkboxes.length === 0;
+        }
+        
+        function confirmDelete() {
+            if (confirm("Are you sure you want to delete the selected transactions?")) {
+                document.getElementById("delete-form").submit(); // ✅ Submit the form
+            }
+            return false; // Prevent default form submission if canceled
+        }
+        
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+        }
+
+        .container {
+            background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
 /* Filter Container */
 .filter-container {
     background: #fff;
@@ -57,46 +100,81 @@ body {
     background-color: #0056b3;
 }
 
-/* Transactions Table */
-.transactions-container {
-    background: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
+        .transactions-container {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
 
-table th, table td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
-}
+        .actions-top {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+        }
 
-table th {
-    background-color: #007bff;
-    color: white;
-}
+        .delete-btn {
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            color: white;
+            background-color: #dc3545;
+        }
 
-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
 
-table tr:hover {
-    background-color: #f1f1f1;
-}
+        .delete-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
 
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 40px;
+        }
+
+        table th, table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Hide checkboxes by default */
+        .delete-checkbox {
+            display: none;
+        }
+        h3{
+            color: #c82333;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+        }
     </style>
 </head>
 <body>
-
-    <!-- Filter Section -->
     <div class="filter-container">
-        <form action="{% url 'all_transactions' %}" method="POST">
+        <form action="{% url 'all_transactions' %}" method="POST" id="filter">
 
             {% csrf_token %}
         <label for="start-date">From Date:</label>
@@ -121,51 +199,65 @@ table tr:hover {
         </select>
 
         <input type="submit" value="Filter" class="filter" />
+        </form>
     </div>
-
-    <!-- Transactions Table -->
-     <h2>All transaction Records</h2><br>
-    <div class="transactions-container">
-        <table>
-            <thead>
-                <tr><th>Transaction Entry Date</th>
-                    <th>Transaction done Date</th>
-                    <th>Category</th>
-                    <th>type</th>
-                    <th>Payment method</th>
-                    <th>Amount</th>
-                </tr>
-            </thead>
-            <tbody id="transactions-body">
-                {% if all_transactions %}
-                {% for transaction in all_transactions%}
-                <tr>
-                    <td>{{transaction.created_at}}</td>
-                    <td>{{transaction.date}}</td>
-                    <td>{{transaction.category}}</td>
-                    <td>{{transaction.type}}</td>
-                    <td>{{transaction.payment_method}}</td>
-                    <td>$ {{transaction.amount}}</td>
-                </tr>
-                {% endfor %}
-                
-                {% endif%}
-            </tbody>
-        </table>
-        {% if all_transactions %}
-
-        {%else%}
-
-                <h3>No transactios are Done</h3>
-
-      
-                {% endif%}
-    </div>
-
     
+
+<div class="container">
+    
+    <h2>All Transaction Records</h2>
+    <div class="transactions-container">
+        
+
+        <form action="{% url 'delete_transactions' %}" method="POST" id="delete-form" onsubmit="return confirmDelete();">
+            <h3>{%for message in messages %}
+                {{message}}
+
+                {%endfor%}
+            </h3>
+            <div class="actions-top">
+                <button type="button" id="delete-btn" class="delete-btn" onclick="toggleDelete()">Delete</button>
+                <button type="submit" id="confirm-delete-btn" class="delete-btn" onclick="return confirmDelete()" style="display: none;">Delete Selected</button>
+            </div>
+            {% csrf_token %}
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Transaction Date</th>
+                        <th>Category</th>
+                        <th>Type</th>
+                        <th>Payment Method</th>
+                        <th>Amount ($)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in all_transactions %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="delete-checkbox" name="selected_transactions" value="{{ transaction.id }}" onclick="toggleDeleteButton()">
+                        </td>
+                        <td>{{ transaction.date }}</td>
+                        <td>{{ transaction.category }}</td>
+                        <td>{{ transaction.type }}</td>
+                        <td>{{ transaction.payment_method }}</td>
+                        <td>${{ transaction.amount }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">No transactions found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <br>
+        </form>
+    </div>
+
+</div>
 
 </body>
 </html>
-
 
 {% endblock %}
