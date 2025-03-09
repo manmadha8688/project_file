@@ -16,17 +16,68 @@
 <link rel="stylesheet" type="text/css" href="{% static 'styles/main_styles.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'styles/responsive.css' %}">
 <style>
-    
-    
-    .m{
-        font-size: 20px;
-        color: black;
-    }
-    .heading{
-        color: rgb(41, 39, 39);
-        margin-left:190px;
-        clear:left;
-    }
+    .defnition_container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Heading */
+        .heading h3 {
+            font-size: 28px;
+            color: #222;
+            margin-bottom: 20px;
+        }
+
+        /* Layout */
+        .media {
+            display: flex;
+            align-items: flex-start; /* Align text to the top of the image */
+            gap: 20px;
+        }
+
+        /* Image */
+        .media img {
+            width: 300px;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        /* Text Content */
+        .text-content {
+            flex: 1;
+            text-align: left;
+        }
+
+        .m {
+            font-size: 17px;
+            color: black;
+            line-height: 1.5;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .media {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .media img {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .text-content {
+                text-align: center;
+            }
+            .center {
+                width: 100%;
+                height: auto;
+                padding: 40px 20px;
+                text-align: center;
+                justify-content: center;
+            }
+
+        }
     
     .action_button {
         margin-left: 40px;
@@ -44,13 +95,23 @@
         background-color: darkred;
     }
     
-   
     .center {
-      margin-left:200px;
-      width: 60%;
-      height: 300px;
-      padding: 10px;
+        background-image: url("{% static 'images/skin.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        width: 74%;
+        height: 300px; /* Adjust height as needed */
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        padding-left: 50px;
+        border-radius: 10px;
+        margin: 0 auto;
+        
     }
+
+
     .middle {
         margin-left:40px;
         width: 60%;
@@ -74,21 +135,7 @@
         display: table;
       }
       
-        *{
-          box-sizing: border-box;
-        }
-        
-        .box {
-          float: left;
-          width: 25%;
-          padding: 50px;
-          background-color: #ccc;
-        }
-        
-        .clearfix::after {
-          content: "";
-          clear: right;
-        }
+       
         .d{
             float: left;
             display:flex;
@@ -189,7 +236,7 @@
 
 </style>
 </head>
-<body >
+<body style="background-color:#f5f5f5;>
     <div style="padding: 10px;margin:auto;">
 
 <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
@@ -376,65 +423,40 @@
 <!-- skin diseases defnition -->
 
 
-    <br>
-     <div class="heading"><h3> What are skin diseaseas?   </h3></div>
-     <div class="media">
-    <div class="row">
-        <div class="column">
-            <img src="{% static 'images/diseases_image_3.jpg' %}" class="d">
-        </div>
-        <div class="column">
-          <div >
-            <m class="m">Skin diseases are conditions that affect your skin. These diseases may cause rashes, inflammation, itchiness or other skin changes.
-                 Some skin conditions may be genetic, while lifestyle factors may cause others. Skin disease treatment may include medications, creams or ointments, or lifestyle changes.</m><br>
-          
-            </m>
-          </div>
+    <br><div class="defnition_container">
+        <div class="heading">
+            <h3>What are Skin Diseases?</h3>
         </div>
         
-      </div>
-      </div>
+        <div class="media">
+            <div class="column">
+                <img src="{% static 'images/diseases_image_3.jpg' %}" alt="Skin Disease Image">
+            </div>
+            <div class="column text-content">
+                <p class="m">
+                    Skin diseases are conditions that affect your skin. These diseases may cause rashes, inflammation, itchiness, or other skin changes.
+                    Some skin conditions may be genetic, while lifestyle factors may cause others. Skin disease treatment may include medications, 
+                    creams or ointments, or lifestyle changes.<br>
+                    Skin disease is a general term for a wide range of conditions that affect the skin, hair, and nails. 
+                    Skin diseases can be caused by a number of factors, including genetics, infections, allergies, and environmental exposures. 
+                </p>
+                
+            </div>
+        </div>
+    </div>
 <br>
 
-
-<div class="center" style="background-image:url({% static 'images/skin.jpg' %});width:74%;">
-  <div style="margin-left: 50px;margin-top:60px;">
-    <div style="color: rgb(88, 88, 214);"><h3>Early detection saves life!</h3></div>
-    <br><p>Small changes on skin can mean big problems<p>
-    <p>This can reveal what your skin needs to stay healthy.</p>
-    <button class="action_button" onclick="window.location.href='{% url 'desease_detecttion:desease_home'%}'" > <h5 style="color: white;">ACT NOW</h5></button>
-  </div>
+<div class="center">
+    <div style="margin-left: 50px;margin-top:60px;">
+        <div style="color: rgb(88, 88, 214);"><h3>Early detection saves life!</h3></div>
+        <br><p>Small changes on skin can mean big problems<p>
+        <p>This can reveal what your skin needs to stay healthy.</p>
+        <button class="action_button" onclick="window.location.href='{% url 'desease_detecttion:desease_home'%}'" > <h5 style="color: white;">ACT NOW</h5></button>
+      </div>
 </div>
-
 <!-- Features -->
 
-<br><br>
-<div class="heading" id="features"><h3> Features </h3></div>
- <br>
-
- <div style="margin-left: 200px; color:#21a721">
-     
-<div style="float: left; width:300px;height:200px ">
-    <h4>Simple</h4>
-    <p>       
-     Place your phone near a mole or other formation on the skin and within  seconds, you will find out if there is cause for concern
-    </p>
-</div>
-
-<div  style="float: left;width:300px;height:100px;margin-right:10px;">
-    <h4>Affordable</h4>
-    <p>   
-    Image analytics features come at an unbeatable price, fit for any request or budget. Flexible pricing plans and customizable bundles will save your practice both time andmoney.
-    </p>
-</div>
-
-<div  style="float: left;width:300px;height:100px">
-    <h4>Accessible</h4>
-    <p>
-     Available anytime, anywhere. Keep your health in check at your fingertips even when you are on the go.
-    </p>
-</div>
-</div>
+{% include 'features.html'%}
 <br><br><br>
 
 <!-- reviews section-->
@@ -444,7 +466,7 @@
 </div>
   
 <br><br><br><br>
-{% include 'reviews.html' %}
+
 
 
 <br><br><br><br><br>
@@ -455,29 +477,11 @@
 
 <br><br>
 <div class="heading" id="howtouse"><h3>How to detect skin diseases?</h3></div>
-<br><br>
-<div class="clearfix">
-    
-    <div class="box" >
-       <div style="margin-left: 10px;"> <img src="download.jpg"></div><p>thki sis matter</p>
-    <p>Some text inside the box.</p>
-    </div>
-    <div class="box">
-        <img src="download.jpg"><p>thki sis matter</p>
-    <p>Some text inside the box.</p>
-    </div>
-    <div class="box">
-        <img src="download.jpg"><p>thki sis matter</p>
-    <p>Some text inside the box.</p>
-    </div>
-    <div class="box" >
-        <div style="margin-left: 10px;"> <img src="download.jpg"></div><p>thki sis matter</p>
-     <p>Some text inside the box.</p>
-     </div>
-</div>
-  
 
-  <br><br>  <br><br>  
+
+{% include 'how to use.html'%}
+
+  <br><br> 
 
   
   

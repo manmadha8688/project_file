@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnosis Result</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+            background: linear-gradient(to right, #e3f2fd, #f1f8ff);
+        }
+
+        .result-container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            max-width: 600px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border: 2px solid #1565c0;
+        }
+
+        h2 {
+            color: #1565c0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Diagnosis Box */
+        .diagnosis-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid #1565c0;
+        }
+
+        .diagnosis-box p {
+            font-size: 18px;
+            margin: 8px 0;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #d32f2f; /* Red for highlighting disease */
+        }
+
+        /* Image Preview */
+        #uploadedImage {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            margin: 15px auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Buttons */
+        .btn {
+            display: block;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            width: 100%;
+            margin-top: 15px;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .back-btn {
+            background: #1565c0;
+            color: white;
+        }
+
+        .back-btn:hover {
+            background: #0d47a1;
+        }
+
+        .appointment-btn {
+            background: #ff4081;
+            color: white;
+        }
+
+        .appointment-btn:hover {
+            background: #c51162;
+        }
+
+        .download-btn {
+            background: #4caf50;
+            color: white;
+        }
+
+        .download-btn:hover {
+            background: #388e3c;
+        }
+
+        /* Condition Details */
+        .condition-details {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .condition-details h3 {
+            color: #1565c0;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .condition-details p {
+            font-size: 16px;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="result-container">
+        <h2>🔬 Diagnosis Result</h2>
+        <img id="uploadedImage" src="uploaded_image.jpg" alt="Uploaded Image">
+        <div class="diagnosis-box">
+            <p><strong>Condition:</strong> <span class="highlight">Melanoma</span></p>
+            <p><strong>Confidence:</strong> 87%</p>
+            <p><strong>Severity Level:</strong> High</p>
+        </div>
+
+        <div class="condition-details">
+            <h3>About Melanoma</h3>
+            <p><strong>Symptoms:</strong> New or unusual growths, changes in existing moles, asymmetry, irregular borders, multiple colors, diameter larger than 6mm.</p>
+            <p><strong>Causes:</strong> Exposure to ultraviolet (UV) radiation from the sun or tanning beds, genetic factors.</p>
+            <p><strong>Treatment Options:</strong> Surgical removal, immunotherapy, targeted therapy, radiation therapy, chemotherapy.</p>
+        </div>
+
+        <a href="index.html" class="btn back-btn">🔄 Upload Another Image</a>
+        <a href="book-appointment.html" class="btn appointment-btn">📅 Book an Appointment</a>
+        <a href="download-report.html" class="btn download-btn">📄 Download Report</a>
+    </div>
+
+</body>
+</html>
